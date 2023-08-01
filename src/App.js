@@ -3,19 +3,8 @@ import "./App.css";
 
 export default class App extends Component {
   state = {
-    todoData: [
-      {
-        id: "1",
-        title: "공부하기",
-        completed: true,
-      },
-      {
-        id: "2",
-        title: "청소하기",
-        completed: false,
-      },
-    ],
-    value: ""
+    todoData: [],
+    value: "",
   };
 
   btnStyle = {
@@ -27,26 +16,26 @@ export default class App extends Component {
     float: "right",
   };
 
-  getStyle = () => {
+  getStyle = (completed) => {
     return {
       padding: "10px",
       borderBottom: "1px dotted #ccc",
-      textDecoration: "none",
+      textDecoration: completed ? "line-through" : "none",
     };
   };
 
   handleClick = (id) => {
     let newTodoData = this.state.todoData.filter((data) => data.id !== id);
-    
+
     this.setState({ todoData: newTodoData });
   };
 
-  handleChange =(e)=>{
-    console.log(e.target.value)
-    this.setState({value: e.target.value})
-  }
+  handleChange = (e) => {
+    console.log(e.target.value);
+    this.setState({ value: e.target.value });
+  };
 
-  handleSubmit =(e)=>{
+  handleSubmit = (e) => {
     // form 안에 input 전송 시 페이지 리로드 막음
     e.preventDefault();
 
@@ -54,13 +43,23 @@ export default class App extends Component {
     let newTodo = {
       id: Date.now(),
       title: this.state.value,
-      completed: false
-    }
-    
+      completed: false,
+    };
+
     // 원래있던 할 일에 새로운 할 일 더하기
-    this.setState({todoData: [...this.state.todoData, newTodo]})
-    
-  }
+    this.setState({ todoData: [...this.state.todoData, newTodo], value: "" });
+  };
+
+  handleCompleteChange = (id) => {
+    let newTodoData = this.state.todoData.map((data) => {
+      if (data.id === id) {
+        data.completed = !data.completed;
+      }
+      return data;
+    });
+
+    this.setState({todoData: newTodoData})
+  };
 
   render() {
     return (
@@ -71,8 +70,12 @@ export default class App extends Component {
           </div>
 
           {this.state.todoData.map((data) => (
-            <div style={this.getStyle()} key={data.id}>
-              <input type="checkbox" defaultChecked={data.completed} />
+            <div style={this.getStyle(data.completed)} key={data.id}>
+              <input
+                type="checkbox"
+                defaultChecked={data.completed}
+                onChange={() => this.handleCompleteChange(data.id)}
+              />
               {data.title}
               <button
                 style={this.btnStyle}
