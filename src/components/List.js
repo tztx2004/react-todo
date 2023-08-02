@@ -1,8 +1,14 @@
 import React from "react";
 
-export default function List({ todoData, setTodoData }) {
-  
-
+export default function List({
+  id,
+  title,
+  completed,
+  todoData,
+  setTodoData,
+  provided,
+  snapshot,
+}) {
   const handleClick = (id) => {
     let newTodoData = todoData.filter((data) => data.id !== id);
     setTodoData(newTodoData);
@@ -17,28 +23,32 @@ export default function List({ todoData, setTodoData }) {
     });
     setTodoData(newTodoData);
   };
-
   return (
-    <div>
-      {todoData.map((data) => (
-        <div key={data.id}>
-          <div className="flex items-center justify-between w-full px-4 py-1 my-2 text-gray-600 bg-gray-100 ">
-            <div className="items-center">
-              <input
-                type="checkbox"
-                defaultChecked={data.completed}
-                onChange={() => handleCompleteChange(data.id)}
-              />{' '}
-              <span className={data.completed?"line-through": undefined}>{data.title}</span>
-            </div>
-            <div className="items-center">
-              <button className="px-4 py-2 float-right" onClick={() => handleClick(data.id)}>
-                X
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
+    <div
+      key={id}
+      {...provided.draggableProps}
+      ref={provided.innerRef}
+      {...provided.dragHandleProps}
+      className={`${
+        snapshot.isDragging ? "bg-gray-400" : "bg-gray-100"
+      } flex items-center justify-between w-full px-4 py-1 my-2 text-gray-600`}
+    >
+      <div className="items-center">
+        <input
+          type="checkbox"
+          defaultChecked={completed}
+          onChange={() => handleCompleteChange(id)}
+        />{" "}
+        <span className={completed ? "line-through" : undefined}>{title}</span>
+      </div>
+      <div className="items-center">
+        <button
+          className="px-4 py-2 float-right"
+          onClick={() => handleClick(id)}
+        >
+          X
+        </button>
+      </div>
     </div>
   );
 }
