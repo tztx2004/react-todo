@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import "./App.css";
 import List from "./components/List";
+import Form from "./components/Form";
 
 export default function App(){
   const [todoData,setTodoData] = useState([])
@@ -10,9 +11,7 @@ export default function App(){
 
 
 
-  const handleChange = (e) => {
-    setValue(e.target.value)
-  };
+
 
   const handleSubmit = (e) => {
     // form 안에 input 전송 시 페이지 리로드 막음
@@ -41,22 +40,7 @@ export default function App(){
 
           <List todoData={todoData} setTodoData={setTodoData} />
 
-          <form style={{ display: "flex" }} onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="value"
-              style={{ flex: "10", padding: "5px" }}
-              placeholder="해야할 일을 입력하세요."
-              value={value}
-              onChange={handleChange}
-            />
-            <input
-              type="submit"
-              value="입력"
-              className="btn"
-              style={{ flex: "1" }}
-            />
-          </form>
+          <Form handleSubmit={handleSubmit} value={value} setValue={setValue} />
         </div>
       </div>
   )
