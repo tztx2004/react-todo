@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function List({
+const List=React.memo(({
   id,
   title,
   completed,
@@ -8,12 +8,9 @@ export default function List({
   setTodoData,
   provided,
   snapshot,
-}) {
-  const handleClick = (id) => {
-    let newTodoData = todoData.filter((data) => data.id !== id);
-    setTodoData(newTodoData);
-  };
-
+  handleClick
+})=>{
+  
   const handleCompleteChange = (id) => {
     let newTodoData = todoData.map((data) => {
       if (data.id === id) {
@@ -51,4 +48,6 @@ export default function List({
       </div>
     </div>
   );
-}
+})
+
+export default List
